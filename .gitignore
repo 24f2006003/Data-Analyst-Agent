@@ -246,3 +246,6 @@ build/
 # IDE
 .vscode/
 .idea/
+
+postman.json
+decodebase65.py
