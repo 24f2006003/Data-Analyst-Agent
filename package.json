@@ -1,0 +1,43 @@
+{
+  "name": "data-analyst-agent",
+  "version": "1.0.0",
+  "description": "AI-powered data analysis agent that can scrape, analyze, and visualize data",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "eval": "promptfoo eval",
+    "eval:view": "promptfoo view"
+  },
+  "keywords": [
+    "data-analysis",
+    "ai",
+    "scraping",
+    "visualization",
+    "api"
+  ],
+  "author": "Arnav Labhasetwar",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/24f2006003/Data-Analyst-Agent.git"
+  },
+  "homepage": "https://github.com/24f2006003/Data-Analyst-Agent",
+  "dependencies": {
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "next": "^14.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.35",
+    "@types/jsdom": "^21.1.6"
+  }
+}

@@ -1,0 +1,27 @@
+# Development files
+.env.local
+.next
+node_modules
+*.log
+
+# Documentation
+IMPLEMENTATION.md
+DEPLOYMENT.md
+
+# Test files
+test-*.js
+*.test.js
+*.spec.js
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
