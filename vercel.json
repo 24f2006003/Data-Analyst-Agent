@@ -1,8 +1,7 @@
 {
-  "version": 2,
   "functions": {
-    "pages/api/*.js": {
-      "maxDuration": 180
+    "pages/api/index.js": {
+      "maxDuration": 300
     }
   }
 }
