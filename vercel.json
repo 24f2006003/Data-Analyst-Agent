@@ -4,15 +4,5 @@
     "pages/api/*.js": {
       "maxDuration": 180
     }
-  },
-  "env": {
-    "OPENAI_API_KEY": "@openai-api-key",
-    "OPENAI_BASE_URL": "@openai-base-url"
-  },
-  "build": {
-    "env": {
-      "OPENAI_API_KEY": "@openai-api-key",
-      "OPENAI_BASE_URL": "@openai-base-url"
-    }
   }
 }
