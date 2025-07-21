@@ -6,10 +6,12 @@
     "dev": "next dev",
     "build": "next build", 
     "start": "next start",
-    "lint": "next lint",
+    "export": "next export",
     "test": "node test/test-agent.js",
     "setup": "npm install && node -e \"const fs = require('fs'); if (!fs.existsSync('.env.local')) { fs.copyFileSync('.env.example', '.env.local'); console.log('Created .env.local - Please add your OPENAI_API_KEY'); } else { console.log('.env.local already exists'); }\"",
-    "deploy": "node -e \"const fs = require('fs'); if (fs.existsSync('vercel.json')) { fs.unlinkSync('vercel.json'); console.log('Removed problematic vercel.json'); }\" && vercel --prod",
+    "fix-build": "node vercel-build-fix.js",
+    "deploy-vercel": "npm run fix-build && vercel --prod",
+    "deploy-railway": "railway up",
     "postinstall": "echo Installation complete! Run npm run dev to start the development server"
   },
   "dependencies": {
