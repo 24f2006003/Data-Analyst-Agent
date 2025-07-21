@@ -9,7 +9,7 @@
     "lint": "next lint",
     "test": "node test/test-agent.js",
     "setup": "npm install && node -e \"const fs = require('fs'); if (!fs.existsSync('.env.local')) { fs.copyFileSync('.env.example', '.env.local'); console.log('Created .env.local - Please add your OPENAI_API_KEY'); } else { console.log('.env.local already exists'); }\"",
-    "deploy": "vercel --prod",
+    "deploy": "node -e \"const fs = require('fs'); if (fs.existsSync('vercel.json')) { fs.unlinkSync('vercel.json'); console.log('Removed problematic vercel.json'); }\" && vercel --prod",
     "postinstall": "echo Installation complete! Run npm run dev to start the development server"
   },
   "dependencies": {
