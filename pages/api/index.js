@@ -1,5 +1,9 @@
 // Helper function to make OpenAI calls with retry logic
 async function makeOpenAICall(messages, maxRetries = 2) {
+  if (!openai) {
+    throw new Error('OpenAI client not initialized');
+  }
+  
   let lastError;
   
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
@@ -31,20 +35,42 @@ async function makeOpenAICall(messages, maxRetries = 2) {
       }
     }
   }
-}import OpenAI from 'openai';
-import axios from 'axios';
-import cheerio from 'cheerio';
-import _ from 'lodash';
-import ss from 'simple-statistics';
+}// Defensive imports to prevent build issues
+let OpenAI, axios, cheerio, _, ss;
 
-const openai = new OpenAI({
+try {
+  OpenAI = require('openai').default || require('openai');
+  axios = require('axios');
+  cheerio = require('cheerio');
+  _ = require('lodash');
+  ss = require('simple-statistics');
+} catch (importError) {
+  console.error('Import error:', importError);
+}
+
+const openai = OpenAI ? new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
   baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1'
-});
+}) : null;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Check if dependencies are available
+  if (!OpenAI || !openai) {
+    return res.status(500).json({ 
+      error: 'OpenAI dependency not available', 
+      details: 'Please check OPENAI_API_KEY environment variable' 
+    });
+  }
+
+  if (!axios || !cheerio) {
+    return res.status(500).json({ 
+      error: 'Required dependencies not available',
+      details: 'axios or cheerio not properly imported'
+    });
   }
 
   try {
@@ -252,6 +278,11 @@ Please analyze this data and provide the exact answer in the format requested. R
 }
 
 async function performWebScraping(url) {
+  if (!axios || !cheerio) {
+    console.error('Web scraping dependencies not available');
+    return [];
+  }
+
   try {
     console.log(`Scraping ${url}...`);
     const response = await axios.get(url, {
