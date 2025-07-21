@@ -1,15 +1,18 @@
 {
-  "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "outputDirectory": ".next",
+  "version": 2,
   "functions": {
-    "app/api/route.ts": {
-      "maxDuration": 300
+    "pages/api/*.js": {
+      "maxDuration": 180
     }
   },
   "env": {
-    "NODE_ENV": "production"
+    "OPENAI_API_KEY": "@openai-api-key",
+    "OPENAI_BASE_URL": "@openai-base-url"
+  },
+  "build": {
+    "env": {
+      "OPENAI_API_KEY": "@openai-api-key",
+      "OPENAI_BASE_URL": "@openai-base-url"
+    }
   }
 }

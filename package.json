@@ -1,43 +1,34 @@
 {
   "name": "data-analyst-agent",
   "version": "1.0.0",
-  "description": "AI-powered data analysis agent that can scrape, analyze, and visualize data",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit",
-    "eval": "promptfoo eval",
-    "eval:view": "promptfoo view"
+    "test": "node test/test-agent.js",
+    "deploy": "chmod +x scripts/deploy.sh && ./scripts/deploy.sh",
+    "setup": "npm install && cp .env.example .env.local"
   },
-  "keywords": [
-    "data-analysis",
-    "ai",
-    "scraping",
-    "visualization",
-    "api"
-  ],
-  "author": "Arnav Labhasetwar",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/24f2006003/Data-Analyst-Agent.git"
-  },
-  "homepage": "https://github.com/24f2006003/Data-Analyst-Agent",
   "dependencies": {
-    "@types/node": "^20.10.0",
-    "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.18",
-    "next": "^14.0.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "typescript": "^5.3.3",
-    "zod": "^3.22.4"
+    "next": "14.0.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "openai": "^4.20.1",
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "canvas": "^2.11.2",
+    "chart.js": "^3.9.1",
+    "chartjs-node-canvas": "^4.1.6",
+    "csv-parser": "^3.0.0",
+    "fs-extra": "^11.1.1",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "simple-statistics": "^7.8.3"
   },
   "devDependencies": {
-    "@types/cheerio": "^0.22.35",
-    "@types/jsdom": "^21.1.6"
+    "eslint": "^8",
+    "eslint-config-next": "14.0.0"
   }
 }

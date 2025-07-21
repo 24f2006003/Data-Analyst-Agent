@@ -1,14 +1,26 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: false,
+  reactStrictMode: true,
+  swcMinify: true,
+  experimental: {
+    serverComponentsExternalPackages: ['canvas']
   },
-  eslint: {
-    ignoreDuringBuilds: false,
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals.push({
+        canvas: 'canvas',
+        'utf-8-validate': 'utf-8-validate',
+        'bufferutil': 'bufferutil'
+      });
+    }
+    return config;
   },
-  env: {
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-  },
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+    responseLimit: false,
+  }
 }
 
 module.exports = nextConfig

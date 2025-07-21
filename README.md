@@ -1,79 +1,97 @@
 # Data Analyst Agent
 
-An AI-powered data analysis agent that can source, prepare, analyze, and visualize any data through a simple API interface. Built for the TDS Data Analyst Agent evaluation using Next.js, TypeScript, and AIPIPE integration.
+An AI-powered data analysis agent that can scrape, process, analyze, and visualize data using Large Language Models. The agent exposes a POST API endpoint that accepts data analysis task descriptions and returns results within 3 minutes.
 
-## 🚀 Quick Start
+## Features
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+- 🌐 **Web Scraping**: Scrape data from websites like Wikipedia
+- 📊 **Data Analysis**: Perform statistical analysis and calculations
+- 📈 **Data Visualization**: Generate charts and plots as base64 encoded images
+- 🔍 **DuckDB Integration**: Query large datasets using DuckDB
+- ⚡ **Fast Processing**: Results delivered within 3 minutes
+- 🚀 **Easy Deployment**: Deploy to Vercel with one click
 
-2. **Build the project:**
-   ```bash
-   npm run build
-   ```
+## Project Structure
 
-3. **Start the server:**
-   ```bash
-   npm start
-   ```
+```
+data-analyst-agent/
+├── pages/
+│   ├── api/
+│   │   └── index.js          # Main API endpoint
+│   └── index.js              # Web interface for testing
+├── test/
+│   ├── question1.txt         # Sample Wikipedia scraping question
+│   ├── question2.txt         # Sample DuckDB analysis question
+│   └── test-agent.js         # Test script
+├── .env.example              # Environment variables template
+├── next.config.js            # Next.js configuration
+├── package.json              # Dependencies and scripts
+├── vercel.json               # Vercel deployment configuration
+└── README.md                 # This file
+```
 
-The API will be available at `http://localhost:3000/api/`
+## Setup Instructions
 
-## 📋 API Documentation
+### 1. Clone and Install Dependencies
 
-### Endpoint: `POST /api/`
-
-Accepts data analysis tasks and returns structured results.
-
-#### Request Formats
-
-**JSON:**
 ```bash
-curl -X POST http://localhost:3000/api/ \
+git clone <your-repo>
+cd data-analyst-agent
+npm install
+```
+
+### 2. Environment Variables
+
+Create a `.env.local` file based on `.env.example`:
+
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` and add your API key:
+
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_BASE_URL=https://aipipe.org/openai/v1
+```
+
+### 3. Local Development
+
+```bash
+npm run dev
+```
+
+Visit `http://localhost:3000` to test the web interface.
+
+### 4. Test the Agent
+
+```bash
+npm test
+```
+
+This will run both sample questions and validate the responses.
+
+## API Usage
+
+### Endpoint
+```
+POST https://your-app.vercel.app/api/
+```
+
+### Request Format
+Send the question as raw text in the request body.
+
+### Example using curl:
+```bash
+curl -X POST "https://your-app.vercel.app/api/" \
   -H "Content-Type: application/json" \
-  -d '{"task": "Your analysis task description"}'
+  -d "Scrape the list of highest grossing films from Wikipedia..."
 ```
 
-**Form Data:**
-```bash
-curl -X POST http://localhost:3000/api/ \
-  -F "taskText=Your analysis task description"
-```
+### Sample Questions
 
-**File Upload:**
-```bash
-curl -X POST http://localhost:3000/api/ \
-  -F "task=@question.txt"
-```
-
-#### Response Format
-
-Returns results directly as JSON (no wrapper object) for evaluation compatibility:
-
-```json
-[1, "Titanic", 0.485782, "data:image/png;base64,iVBORw0KG..."]
-```
-
-Or for JSON object format:
-```json
-{
-  "Which high court disposed the most cases from 2019 - 2022?": "Delhi High Court",
-  "What's the regression slope...?": "0.75",
-  "Plot the year and # of days...": "data:image/webp:base64,..."
-}
-```
-
-## ✅ Supported Analysis Types
-
-### 1. Web Scraping
-- Extract data from Wikipedia tables
-- Parse HTML content and tables
-- Handle structured data extraction
-
-**Example:**
-```
+#### 1. Wikipedia Scraping
+```text
 Scrape the list of highest grossing films from Wikipedia. It is at the URL:
 https://en.wikipedia.org/wiki/List_of_highest-grossing_films
 
@@ -83,213 +101,157 @@ Answer the following questions and respond with a JSON array of strings containi
 2. Which is the earliest film that grossed over $1.5 bn?
 3. What's the correlation between the Rank and Peak?
 4. Draw a scatterplot of Rank and Peak along with a dotted red regression line through it.
-   Return as a base-64 encoded data URI, "data:image/png;base64,iVBORw0KG..." under 100,000 bytes.
 ```
 
-### 2. Database Queries
-- DuckDB query execution
-- Parquet file analysis
-- S3 data processing
-
-**Example:**
-```sql
-INSTALL httpfs; LOAD httpfs;
-INSTALL parquet; LOAD parquet;
-
-SELECT COUNT(*) FROM read_parquet('s3://indian-high-court-judgments/metadata/parquet/year=*/court=*/bench=*/metadata.parquet?s3_region=ap-south-1');
-```
-
-### 3. Data Visualization
-- Scatter plots with regression lines
-- Bar charts and line graphs
-- Base64 encoded PNG/WebP images
-
-### 4. Statistical Analysis
-- Correlation calculations
-- Regression analysis
-- Count and aggregation operations
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Create `.env.local` file:
-```env
-# Required for AI analysis
-OPENAI_API_KEY=your_openai_api_key_here
-
-# Optional configurations
-AIPIPE_ENDPOINT=https://aipipe.org/openai/v1/chat/completions
-DEFAULT_TIMEOUT=180000
-DEBUG=false
-```
-
-### Mock Mode
-
-The system works without an API key by providing mock responses for testing and evaluation.
-
-## 🧪 Testing
-
-**Manual testing:**
-```bash
-curl -X POST http://localhost:3000/api/ \
-  -H "Content-Type: application/json" \
-  -d '{"task": "Count how many items are in [1,2,3,4,5]"}'
-```
-
-**With question file:**
-```bash
-curl -X POST http://localhost:3000/api/ \
-  -F "task=@question.txt"
-```
-
-## 🚢 Deployment
-
-### Vercel (Recommended)
-
-1. Push to GitHub
-2. Connect to Vercel
-3. Set `OPENAI_API_KEY` environment variable
-4. Deploy
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/data-analyst-agent)
-
-### Railway
-
-```bash
-npm install -g @railway/cli
-railway login
-railway init
-railway add
-railway variables:set OPENAI_API_KEY=your_key_here
-railway deploy
-```
-
-### Heroku
-
-```bash
-heroku create your-app-name
-heroku config:set OPENAI_API_KEY=your_key_here
-git push heroku main
-```
-
-## 📊 Evaluation
-
-This agent is designed for automated evaluation with promptfoo:
-
-```bash
-# Install promptfoo (if not already installed)
-npm install -g promptfoo
-
-# Run evaluation
-promptfoo eval
-
-# View results
-promptfoo view
-```
-
-The evaluation tests:
-1. ✅ Returns exactly 4 elements in JSON array format
-2. ✅ First answer equals `1` (count of $2bn movies before 2020)
-3. ✅ Second answer contains "Titanic" (earliest $1.5bn movie)
-4. ✅ Third answer is `0.485782` ±0.001 (Rank-Peak correlation)
-5. ✅ Fourth element is a base64 scatter plot with red dotted regression line
-
-## 🏗️ Architecture
-
-```
-├── app/
-│   └── api/
-│       ├── route.ts          # Main API endpoint
-│       └── proxy/
-│           └── route.ts      # AIPIPE proxy
-├── services/
-│   ├── ai-analysis.service.ts      # AI/LLM integration
-│   ├── data-analyst.service.ts     # Main orchestration
-│   ├── data-processing.service.ts  # Data transformation
-│   ├── database.service.ts         # Database operations
-│   ├── task-parser.service.ts      # Task understanding
-│   ├── visualization.service.ts    # Chart generation
-│   └── web-scraping.service.ts     # Web scraping
-├── types/
-│   └── analysis.types.ts     # TypeScript definitions
-└── ...
-```
-
-## 🎯 Sample Responses
-
-### Movie Analysis Response
+**Expected Response Format:**
 ```json
 [1, "Titanic", 0.485782, "data:image/png;base64,iVBORw0KG..."]
 ```
 
-### Court Data Response
+#### 2. DuckDB Dataset Analysis
+```text
+The Indian high court judgement dataset contains judgements from the Indian High Courts...
+
+Answer the following questions and respond with a JSON object containing the answer.
+```
+
+**Expected Response Format:**
 ```json
 {
-  "Which high court disposed the most cases from 2019 - 2022?": "Delhi High Court",
-  "What's the regression slope of the date_of_registration - decision_date by year in the court=33_10?": "0.75",
-  "Plot the year and # of days of delay from the above question as a scatterplot with a regression line. Encode as a base64 data URI under 100,000 characters": "data:image/webp:base64,UklGRv..."
+  "Which high court disposed the most cases from 2019 - 2022?": "Madras High Court",
+  "What's the regression slope...": "0.0123",
+  "Plot the year and # of days...": "data:image/webp;base64,..."
 }
 ```
 
-## 🔍 Features
+## Deployment to Vercel
 
-- **Multi-format Input:** JSON, form data, file upload
-- **Web Scraping:** Wikipedia tables and structured data
-- **Database Integration:** DuckDB queries and Parquet files
-- **AI Analysis:** AIPIPE integration with fallback to mocks
-- **Visualization:** SVG-based charts with base64 encoding
-- **Error Handling:** Comprehensive error handling and timeouts
-- **Type Safety:** Full TypeScript implementation
-- **Evaluation Ready:** Compatible with promptfoo testing
-
-## 🛠️ Development
-
+### 1. Install Vercel CLI
 ```bash
-# Development server
-npm run dev
-
-# Type checking
-npm run type-check
-
-# Build
-npm run build
-
-# Production server
-npm start
+npm i -g vercel
 ```
 
-## 📈 Performance
+### 2. Login to Vercel
+```bash
+vercel login
+```
 
-- 3-minute timeout for complex analyses
-- Optimized data processing pipelines
-- Efficient visualization generation
-- Mock responses for testing without API costs
+### 3. Deploy
+```bash
+vercel
+```
 
-## 🆘 Troubleshooting
+### 4. Set Environment Variables
+```bash
+vercel env add OPENAI_API_KEY
+vercel env add OPENAI_BASE_URL
+```
+
+When prompted, enter:
+- `OPENAI_API_KEY`: Your OpenAI API key
+- `OPENAI_BASE_URL`: `https://aipipe.org/openai/v1`
+
+### 5. Redeploy with Environment Variables
+```bash
+vercel --prod
+```
+
+## Supported Analysis Types
+
+### Web Scraping
+- Wikipedia tables and lists
+- HTML parsing with Cheerio
+- Data extraction and cleaning
+
+### Statistical Analysis
+- Correlation calculations
+- Regression analysis
+- Basic statistical functions
+
+### Data Visualization
+- Scatter plots
+- Line charts
+- Regression lines
+- Base64 encoded PNG/WebP output
+- Size optimization (< 100KB)
+
+### Database Queries
+- DuckDB integration
+- Parquet file processing
+- S3 data access
+- SQL query execution
+
+## Technical Details
+
+### Dependencies
+- **Next.js**: Web framework
+- **OpenAI**: LLM integration
+- **Cheerio**: HTML parsing
+- **Chart.js**: Data visualization
+- **Canvas**: Server-side chart rendering
+- **Axios**: HTTP client
+- **Lodash**: Utility functions
+- **Simple Statistics**: Statistical calculations
+
+### Performance
+- 3-minute timeout for complex analysis
+- Optimized chart rendering
+- Efficient memory usage
+- Error handling and recovery
+
+### Limitations
+- Chart size limited to 100KB
+- 3-minute processing timeout
+- OpenAI API rate limits
+- Vercel function limitations
+
+## Testing
+
+The test suite validates:
+- Response format correctness
+- Processing time (< 3 minutes)
+- Chart generation and encoding
+- Statistical accuracy
+- API availability
+
+Run tests:
+```bash
+npm test
+```
+
+## Troubleshooting
 
 ### Common Issues
 
-1. **Build errors:** Run `npm install` and `npm run build`
-2. **API timeouts:** Increase `DEFAULT_TIMEOUT` environment variable
-3. **Missing data:** Check if mock data is being used correctly
-4. **Visualization issues:** Verify SVG generation is working
+1. **Canvas/Chart Rendering Errors**
+   - Ensure canvas dependencies are installed
+   - Check Node.js version compatibility
+
+2. **OpenAI API Errors**
+   - Verify API key is correct
+   - Check base URL configuration
+   - Monitor rate limits
+
+3. **Timeout Issues**
+   - Complex queries may take time
+   - Consider breaking down large requests
+   - Check network connectivity
+
+4. **Deployment Issues**
+   - Verify environment variables
+   - Check Vercel function limits
+   - Review build logs
 
 ### Debug Mode
+Set `NODE_ENV=development` for detailed logging.
 
-```bash
-DEBUG=true npm run dev
-```
+## Contributing
 
-## 📄 License
+1. Fork the repository
+2. Create a feature branch
+3. Add tests for new functionality
+4. Submit a pull request
 
-MIT License - see [LICENSE](LICENSE) file for details.
+## License
 
-## 👨‍💻 Author
-
-**Arnav Labhasetwar**  
-IIT Madras - TDS Project 2
-
----
-
-**Ready for evaluation and deployment! 🚀**
+MIT License - see LICENSE file for details.
