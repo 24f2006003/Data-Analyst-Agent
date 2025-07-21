@@ -4,15 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build", 
+    "build": "next build",
     "start": "next start",
-    "export": "next export",
-    "test": "node test/test-agent.js",
-    "setup": "npm install && node -e \"const fs = require('fs'); if (!fs.existsSync('.env.local')) { fs.copyFileSync('.env.example', '.env.local'); console.log('Created .env.local - Please add your OPENAI_API_KEY'); } else { console.log('.env.local already exists'); }\"",
-    "fix-build": "node vercel-build-fix.js",
-    "deploy-vercel": "npm run fix-build && vercel --prod",
-    "deploy-railway": "railway up",
-    "postinstall": "echo Installation complete! Run npm run dev to start the development server"
+    "export": "next export"
   },
   "dependencies": {
     "next": "14.0.0",
